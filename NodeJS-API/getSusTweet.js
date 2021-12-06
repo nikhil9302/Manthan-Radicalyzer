@@ -3,15 +3,6 @@ const express = require("express");
 const app = express();
 const fs = require('fs');
 
-//server started at port 3000 to display the tweets of suspect in a tablular html
-app.listen(3000, () => {
-  console.log("Application started and Listening on port 3000");
-});
-
-// this is the ID for suspect @karynaur_, can be found using POSTMAN or Twitter Profile
-const userId = "1101517747945725952";
-const url = `https://api.twitter.com/2/users/${userId}/tweets`;
-
 // .env file has BEARER_TOKEN='my-bearer-token', .env is git ignored for security reasons
 require('dotenv').config();
 const bearerToken = process.env.BEARER_TOKEN;
@@ -19,21 +10,38 @@ const bearerToken = process.env.BEARER_TOKEN;
 // collect the userTweets in an array for later
 let userTweets = [];
 //collect the username of the suspect
-let susName = "_karynaur";
+let susName;
+let userId;
+const getUserIDByUserName = async () => {
+    //twitter username input from command line
+    userName = process.argv[2];
+    const options = {
+        headers: {            
+            "authorization": `Bearer ${bearerToken}`
+        }
+    }
+    const urlName = `https://api.twitter.com/2/users/by/username/${userName}`;
+    const resp = await needle('get', urlName,options);
+    // this is the Name of the user's Twitter Profile
+    susName = resp.body.data.name;
+    // this is the userID of Twitter Profile
+    userId = resp.body.data.id;    
+    getSusTweets()
+}
+
 const getSusTweets = async () => {    
     // paramters requested for getPage and we request the author_id expansion so that we can print out the user name later
     let params = {
         "max_results": 100,
         "tweet.fields": "created_at",                    
     }
-
+    
     const options = {
         headers: {
             "User-Agent": "v2UserTweetsJS",
             "authorization": `Bearer ${bearerToken}`
         }
-    }
-
+    }    
     let hasNextPage = true;
     let nextToken = null;    
     console.log("Fetching Suspect Tweets...");   
@@ -78,13 +86,15 @@ const getSusTweets = async () => {
     }
     //sus.json file creation
     var json = JSON.stringify(obj);
-    fs.writeFile('../FastAPI/sus.json', json, 'utf8', (err)=>{
+    fs.writeFile('sus.json', json, 'utf8', (err)=>{
         if (err) console.log(err);
         else console.log('JSON completed');
     });
+    
     console.dir(userTweets, {
         depth: null
     });
+    
     //for dynamic gsheet creation
     const { google } = require("googleapis");
     app.set("view engine", "ejs");
@@ -116,7 +126,7 @@ const getSusTweets = async () => {
         resource: {
             values: rows,
         },
-    });    
+    });   
     var RQ;
     const {spawn} = require('child_process');
     const python = spawn('python', ['../FastAPI/get_preds.py']);
@@ -131,6 +141,7 @@ const getSusTweets = async () => {
 }
 
 const getPage = async (params, options, nextToken) => {
+    const url = `https://api.twitter.com/2/users/${userId}/tweets`;
     if (nextToken) {
         params.pagination_token = nextToken;
     }
@@ -146,18 +157,10 @@ const getPage = async (params, options, nextToken) => {
         throw new Error(`Request failed: ${err}`);
     }
 }
-getSusTweets();
-//ips = []
-// to display sus tweets in a html form
-app.get("/suspecttweets", (req, res) => {      
-    /*app.set('trust proxy', true)
-    ips.push("Hostname: "+ req.hostname+" IP addr: "+req.ip)*/    
-    ans = `<h1>${susName}</h1><table>`;
-    for(let i = 0;i<userTweets.length;i++){
-        ans += `<tr><td>Tweet ${i+1}: ${userTweets[i]['text'].trim('\n')}</td></tr>`;
-    }
-    res.send(ans)
-});
+getUserIDByUserName();
+
+
+
 
 
 
