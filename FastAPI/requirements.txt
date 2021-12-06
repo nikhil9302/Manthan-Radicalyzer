@@ -2,3 +2,4 @@ detoxify
 emoji
 nltk
 tqdm
+pandas
