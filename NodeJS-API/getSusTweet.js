@@ -78,7 +78,7 @@ const getSusTweets = async () => {
     }
     //sus.json file creation
     var json = JSON.stringify(obj);
-    fs.writeFile('sus.json', json, 'utf8', (err)=>{
+    fs.writeFile('../FastAPI/sus.json', json, 'utf8', (err)=>{
         if (err) console.log(err);
         else console.log('JSON completed');
     });
@@ -117,6 +117,17 @@ const getSusTweets = async () => {
             values: rows,
         },
     });    
+    var RQ;
+    const {spawn} = require('child_process');
+    const python = spawn('python', ['../FastAPI/get_preds.py']);
+    python.stdout.on('data', function (data) {
+        console.log('Running the python script model');
+        RQ = data.toString();
+       });
+    
+    python.on('close', (code) => {
+       console.log(`RQ Output: ${RQ}`);
+    });
 }
 
 const getPage = async (params, options, nextToken) => {
@@ -147,6 +158,13 @@ app.get("/suspecttweets", (req, res) => {
     }
     res.send(ans)
 });
+
+
+
+
+
+
+
 
 
 
