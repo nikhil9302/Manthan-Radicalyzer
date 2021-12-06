@@ -6,9 +6,14 @@ import pandas as pd
 month_rq = {}
 model = Detoxify('unbiased')
 
+<<<<<<< HEAD
 def get_rq(fpath):
     with open(fpath, 'r') as f:
         data = json.loads(f.read())
+=======
+with open('Manthan-Radicalyzer/NodeJS-API/sus.json', 'r') as f:
+    data = json.loads(f.read())
+>>>>>>> ff1c7c02fa6a99479e1467284a9099ce6270f823
 
     data = pd.DataFrame.from_records(data['table'], columns=['id', 'tweet', 'time'])[3:]
     data.reset_index(drop = True, inplace = True)
@@ -33,4 +38,8 @@ def get_rq(fpath):
     trend = pd.DataFrame(params.max(axis = 1))
     rq = (trend.sum(axis = 0)/len(trend)).values[0]
 
+<<<<<<< HEAD
     return rq
+=======
+print(rq)
+>>>>>>> ff1c7c02fa6a99479e1467284a9099ce6270f823
