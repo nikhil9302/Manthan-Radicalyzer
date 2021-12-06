@@ -1,0 +1,18 @@
+{
+  "name": "radicalyzer",
+  "version": "1.0.0",
+  "description": "\"NodeJS Social Media Bot\"",
+  "main": "getSusTweet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikhil Menon",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "googleapis": "^91.0.0",
+    "needle": "^3.0.0",
+    "twitter": "^1.7.1"
+  }
+}
