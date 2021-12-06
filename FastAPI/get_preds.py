@@ -6,8 +6,8 @@ import pandas as pd
 month_rq = {}
 model = Detoxify('unbiased')
 
-def get_rq(fpath):
-    with open(fpath, 'r') as f:
+def get_rq():     
+    with open("sus.json", 'r',errors='ignore') as f:
         data = json.loads(f.read())
 
     data = pd.DataFrame.from_records(data['table'], columns=['id', 'tweet', 'time'])[3:]
@@ -27,10 +27,10 @@ def get_rq(fpath):
                 results[k] = sum(results[k])/len(results[k])
             month_rq[f"{j}-{i}"] = results
 
-
-
     params = pd.DataFrame(month_rq).T
     trend = pd.DataFrame(params.max(axis = 1))
     rq = (trend.sum(axis = 0)/len(trend)).values[0]
 
     return rq
+
+print(get_rq())
