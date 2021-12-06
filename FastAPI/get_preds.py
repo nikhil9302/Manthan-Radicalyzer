@@ -6,7 +6,7 @@ import pandas as pd
 month_rq = {}
 model = Detoxify('unbiased')
 
-with open('sus.json', 'r') as f:
+with open('Manthan-Radicalyzer/NodeJS-API/sus.json', 'r') as f:
     data = json.loads(f.read())
 
 data = pd.DataFrame.from_records(data['table'], columns=['id', 'tweet', 'time'])[3:]
