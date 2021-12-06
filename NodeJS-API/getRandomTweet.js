@@ -60,7 +60,7 @@ const collecttweet = (params) => {
             }
             obj.table = tweets
             var json = JSON.stringify(obj);
-            fs.writeFile('random.json', json, 'utf8', (err)=>{
+            fs.writeFile('../FastAPI/random.json', json, 'utf8', (err)=>{
                 if (err) console.log(err);
                 else console.log('JSON completed');
             });
