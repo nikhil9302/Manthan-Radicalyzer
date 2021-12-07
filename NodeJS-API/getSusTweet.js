@@ -144,7 +144,7 @@ app.get('/',(req,res)=>{
             },
         });*/  
         const {spawn} = require('child_process');
-        const python = spawn('python', ['../FastAPI/get_preds.py']);
+        const python = spawn('python', ['../DL-Model/get_preds.py']);
         python.stdout.on('data', function (data) {
             console.log('Running the python script model');
             RQ = data.toString();
