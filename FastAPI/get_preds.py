@@ -28,7 +28,9 @@ def get_rq():
             month_rq[f"{j}-{i}"] = results
 
     params = pd.DataFrame(month_rq).T
+    params.plot(ylim = (-0.1, 1)).figure.savefig('../logs/user_category_rq.png')
     trend = pd.DataFrame(params.max(axis = 1))
+    trend.plot(color = 'green', ylim = (-0.1, 1), label = 'toxicity').figure.savefig('../logs/user_trend.png')
     rq = (trend.sum(axis = 0)/len(trend)).values[0]
 
     return rq
