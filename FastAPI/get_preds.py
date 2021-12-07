@@ -7,7 +7,7 @@ month_rq = {}
 model = Detoxify('unbiased')
 
 def get_rq():     
-    with open("../NodeAPI/sus.json", 'r',errors='ignore') as f:
+    with open("../NodeJS-API/sus.json", 'r',errors='ignore') as f:
         data = json.loads(f.read())
 
     data = pd.DataFrame.from_records(data['table'], columns=['id', 'tweet', 'time'])[3:]
