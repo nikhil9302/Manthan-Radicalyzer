@@ -9,7 +9,7 @@ const hbs = require('hbs')
 app.set('view engine', 'hbs')
 app.set('views', './public')
     //server started at port 3000 to display the tweets of suspect in a tablular html
-app.listen(3000, () => {
+app.listen(3000,"172.31.37.64", () => {
     console.log("Application started and Listening on port 3000");
 });
 
