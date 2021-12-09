@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
     const getSusTweets = async() => {
         // paramters requested for getPage and we request the author_id expansion so that we can print out the user name later
         let params = {
-            //can take only 100 tweets at a time because of twitter restriction, can get higher level of access for research only.
+            //can take only 100 tweets at a time because of twitter developer restriction,we can get higher level of access for research only.
             "max_results": 100,
             "tweet.fields": "created_at",
             "expansions": "author_id"
@@ -74,11 +74,9 @@ app.get('/', (req, res) => {
         console.log("Fetching Suspect Tweets...");
         var obj = {
             table: []
-        };
-        // c is the no.of pages twitter feed
-        let c = 0;
-        // c < 1, because my laptop's memory can handle computation of just 1 page at max, i.e 100 tweets
-        while (hasNextPage&&c<1) {
+        };        
+        //hasNextPage to see if the person has tweets more than 1 page, so we will be able to collect at max 100 tweets from each tweet page
+        while (hasNextPage) {
             let resp = await getPage(params, options, nextToken);
             if (resp && resp.meta && resp.meta.result_count && resp.meta.result_count > 0) {
                 susName = resp.includes.users[0].name;
@@ -93,8 +91,7 @@ app.get('/', (req, res) => {
                 }
             } else {
                 hasNextPage = false;
-            }
-            c++;
+            }            
         }
         row = [];
         row.push("Suspect UserName: ", susName);
