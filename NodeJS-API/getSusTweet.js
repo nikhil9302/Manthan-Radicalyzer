@@ -114,7 +114,7 @@ app.get('/', (req, res) => {
         }
         //sus.json file creation
         var json = JSON.stringify(obj);
-        fs.writeFile('sus.json', json, 'utf8', (err) => {
+        fs.writeFile('suspect.json', json, 'utf8', (err) => {
             if (err) console.log(err);
             else console.log('JSON completed');
         });
