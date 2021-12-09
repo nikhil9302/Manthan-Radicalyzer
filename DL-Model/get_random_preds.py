@@ -28,3 +28,5 @@ def get_sus_users(rq_base):
                 if user not in sus_user:sus_user.append(user)
     
     return json.dumps(sus_user)
+
+print(get_sus_users(0.03))

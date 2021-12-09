@@ -17,7 +17,6 @@ def get_rq():
     data.insert(3, 'month', [int(i.split('-')[1]) for i in data.time.values])
     data.insert(4, 'year', [int(i.split('-')[0]) for i in data.time.values])
 
-
     for i in tqdm(list(set(data.year.values))):
         df_year = data.loc[data.year == i].drop(['id', 'time'], axis = 1)
         for j in list(set(df_year.month.values)):
@@ -28,9 +27,9 @@ def get_rq():
             month_rq[f"{j}-{i}"] = results
 
     params = pd.DataFrame(month_rq).T
-    params.plot(ylim = (-0.1, 1)).figure.savefig('../NodeJS-API/public/user_category_rq.png')
+    params.plot(ylim = (-0.1, 1)).figure.savefig('../NodeJS-API/public/user_category_rq.png',format='png')
     trend = pd.DataFrame(params.max(axis = 1))
-    trend.plot(color = 'green', ylim = (-0.1, 1), label = 'toxicity').figure.savefig('../NodeJS-API/public/user_trend.png')
+    trend.plot(color = 'green', ylim = (-0.1, 1), label = 'toxicity').figure.savefig('../NodeJS-API/public/user_trend.png',format='png')
     rq = (trend.sum(axis = 0)/len(trend)).values[0]
 
     return rq
