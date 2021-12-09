@@ -3,6 +3,9 @@ from detoxify import Detoxify
 from tqdm.auto import tqdm
 from clean_data import normalizeTweet
 import pandas as pd
+from forecaster import forecast
+
+
 month_rq = {}
 model = Detoxify('unbiased')
 
@@ -32,7 +35,13 @@ def get_rq():
     trend = pd.DataFrame(params.max(axis = 1))
     trend.plot(color = 'green', ylim = (-0.1, 1), label = 'toxicity').figure.savefig('../NodeJS-API/public/user_trend.png')
     rq = (trend.sum(axis = 0)/len(trend)).values[0]
+    print(rq)
+    df = pd.DataFrame({'ds': trend.to_dict()[0].keys(), 'y':trend.to_dict()[0].values()})
+    df.ds = pd.to_datetime(df.ds, infer_datetime_format=True)
+
+    plt = forecast(df, 20)
+    plt.savefig('../NodeJS-API/public/user_forecast.png')
 
     return rq
 
-print(get_rq())
+
