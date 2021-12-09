@@ -19,7 +19,7 @@ let hashtags = "";
 const trend = () =>{
     T.get('trends/place', param, (err, data, response) =>{
         if(!err){        
-            for(let i = 0; i < 11; i++){  
+            for(let i = 0; i < 15; i++){  
                 hashtags += data[0].trends[i].query;
                 hashtags += " OR ";                 
             }
@@ -60,29 +60,10 @@ const collecttweet = (params) => {
             }
             obj.table = tweets
             var json = JSON.stringify(obj);
-            fs.writeFile('random.json', json, 'utf8', (err)=>{
+            fs.writeFile('random1.json', json, 'utf8', (err)=>{
                 if (err) console.log(err);
                 else console.log('JSON completed');
-            });
-            const { google } = require("googleapis");
-            app.set("view engine", "ejs");
-            const auth = new google.auth.GoogleAuth({
-                keyFile: "./keys.json", //the key file that you will contain credentials for google sheet API
-                scopes: "https://www.googleapis.com/auth/spreadsheets", //url to spreadsheets API
-            });         
-            const authClientObject = auth.getClient();
-            const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
-            const spreadsheetId = "19RlQnM7q3tYDyVmfn4QtvawQD8eST_QkrhbUZXAq--Y";
-            googleSheetsInstance.spreadsheets.values.append({
-                auth, //auth object
-                spreadsheetId, //spreadsheet id
-                range: "Sheet1!A:B", //sheet name and range of cells
-                valueInputOption: "USER_ENTERED", // The information will be passed according to what the usere passes in as date, number or text
-                resource: {
-                    values: tweets,
-                },
-            });
-            console.log("Collected tweets in the google sheets sucessfully")
+            });            
         }   
         else{
           console.log(err);    
