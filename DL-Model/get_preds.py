@@ -36,7 +36,6 @@ def get_rq():
     print(rq)
     df = pd.DataFrame({'ds': trend.to_dict()[0].keys(), 'y':trend.to_dict()[0].values()})
     df.ds = pd.to_datetime(df.ds, infer_datetime_format=True)
-    print(df.head())
 
     plt = forecast(df, 20)
     plt.savefig('../NodeJS-API/public/user_forecast.png')
